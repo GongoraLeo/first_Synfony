@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Usuario index{% endblock %}
+{% block title %}Listado de usuario{% endblock %}
 
 {% block body %}
-    <h1>Usuario index</h1>
+    <h1>Listado de usuario</h1>
 
     <table class="table">
         <thead>
@@ -23,17 +23,17 @@
                 <td>{{ usuario.apellido }}</td>
                 <td>{{ usuario.edad }}</td>
                 <td>
-                    <a href="{{ path('app_usuario_show', {'id': usuario.id}) }}">show</a>
-                    <a href="{{ path('app_usuario_edit', {'id': usuario.id}) }}">edit</a>
+                    <a href="{{ path('app_usuario_show', {'id': usuario.id}) }}">Mostrar usuario</a>
+                    <a href="{{ path('app_usuario_edit', {'id': usuario.id}) }}">Editar usuario</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="5">no se han encontrado usuarios</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_usuario_new') }}">Create new</a>
+    <a href="{{ path('app_usuario_new') }}">Crear nuevo usuario</a>
 {% endblock %}

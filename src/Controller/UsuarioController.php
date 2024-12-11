@@ -6,6 +6,7 @@ use App\Entity\Usuario;
 use App\Form\UsuarioType;
 use App\Repository\UsuarioRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\OrderBy;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,10 +16,15 @@ use Symfony\Component\Routing\Attribute\Route;
 final class UsuarioController extends AbstractController
 {
     #[Route(name: 'app_usuario_index', methods: ['GET'])]
-    public function index(UsuarioRepository $usuarioRepository): Response
+    public function index(UsuarioRepository $usuarioRepository, EntityManagerInterface $entityManager): Response //le pasamos el objeto EntityManagerInterface para un método de funcionamiento más global y no tener que coger funciones de una entidad concreta
     {
+        //$usuarios = $usuarioRepository->findByEdad(37);//con el query que hemos creado
+        //$usuarios = $usuarioRepository->findBy(array('edad' => 43), array('id' =>'DESC'));
+        $usuarios = $usuarioRepository->findAll();
+        //$usuarios = $entityManager->getRepository(Usuario::class)->findAll();//se indica el repositorio al que se quiere ejecutar el método y el método a ejecutar
+        //$usuarios = $usuarioRepository->findByEdadQuery(43);
         return $this->render('usuario/index.html.twig', [
-            'usuarios' => $usuarioRepository->findAll(),
+            'usuarios' => $usuarios,
         ]);
     }
 

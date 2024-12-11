@@ -16,6 +16,29 @@ class UsuarioRepository extends ServiceEntityRepository
         parent::__construct($registry, Usuario::class);
     }
 
+    public function findByEdad($edad): array
+        {
+            return $this->createQueryBuilder('u')
+                ->andWhere('u.edad = :edad')
+                ->setParameter('edad', $edad)
+                ->getQuery()
+                ->getResult()
+            ;
+        }
+
+    //otro ejemplo para hacer lo mismo de forma distinta accediendo al entityManager en vez de a la entidad concreta
+    public function findByEdadQuery($edad): array
+        {
+            $em = $this->getEntityManager();
+            $query = $em->createQuery(
+                'SELECT u
+                FROM App\Entity\Usuario u
+                WHERE u.edad = :edad'
+            )->setParameter('edad', $edad);
+            return $query->getResult();
+
+        }
+
     //    /**
     //     * @return Usuario[] Returns an array of Usuario objects
     //     */
