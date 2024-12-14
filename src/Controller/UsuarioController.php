@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Usuario;
+use App\Form\PaisType;
 use App\Form\UsuarioType;
 use App\Repository\UsuarioRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -33,6 +34,7 @@ final class UsuarioController extends AbstractController
     {
         $usuario = new Usuario();
         $form = $this->createForm(UsuarioType::class, $usuario);
+        //$form = $this->createForm(PaisType::class, null);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -63,9 +65,14 @@ final class UsuarioController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            if ($this->isCsrfTokenValid('usuario_item'.$usuario->getId(), $request->request->get('_token'))){
+                $entityManager->persist($usuario);
+                $entityManager->flush();
 
             return $this->redirectToRoute('app_usuario_index', [], Response::HTTP_SEE_OTHER);
+        }else{
+            echo 'El token enviado no es válido, eres un robot, actualiza.';
+            }
         }
 
         return $this->render('usuario/edit.html.twig', [
